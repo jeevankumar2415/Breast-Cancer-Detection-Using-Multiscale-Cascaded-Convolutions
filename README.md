@@ -32,8 +32,7 @@ https://www.kaggle.com/datasets/aryashah2k/breast-ultrasound-images-dataset
 
 https://data.mendeley.com/datasets/7fvgj4jsp7/1
 
-# Dataset
- Enhancement Pipeline:
+# Dataset Enhancement Pipeline:
 The breast ultrasound images undergo a series of enhancement techniques, where the output of
 each step is used as the input for the next, improving image quality and tumor visibility.
 
@@ -47,9 +46,6 @@ Wavelet Features and Contrast Enhancement: Enhances fine tumor details by breaki
 image into multiple levels.
 
 Fuzzy Logic Transformation: Handles unclear boundaries and improves image clarity.
-
-Resizing: After all enhancements, both images and masks are resized to 224×224×3 for
-consistency in model training.
 
 ![Screenshot 2025-04-28 210650](https://github.com/user-attachments/assets/955d373d-e39d-4652-baa9-27d0f8378d9e)
 
