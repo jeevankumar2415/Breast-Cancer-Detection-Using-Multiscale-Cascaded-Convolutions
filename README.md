@@ -37,15 +37,25 @@ https://data.mendeley.com/datasets/7fvgj4jsp7/1
 restructured and merged
 
 Directory Structure:
+
   breast_cancer_dataset/
+  
   ├── Normal/
+  
   │ ├── Images/
+  
   │ └── Masks/
+  
   ├── Benign/
+  
   │ ├── Images/
+  
   │ └── Masks/
+  
   └── Malignant/
+  
   ├── Images/
+  
   └── Masks/
 
 # Dataset Enhancement Pipeline:
