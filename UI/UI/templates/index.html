@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breast Cancer Detection</title>
+    <style>
+        body {
+            background-color: black;
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            min-height: 100vh; /* Ensures full page usage */
+        }
+        .container {
+            background-color: #4d4d4d;
+            width: 90%;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 15px;
+            margin-top: 80px;
+
+        }
+        .image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .image-container img {
+            width: 400px;
+        }
+        .content {
+            flex: 2;
+            text-align: center;
+            color: pink;
+            font-family: cursive;
+            padding-bottom: 40px;
+        }
+
+        .buttons {
+            margin-top: 10px;
+        }
+        .upload-btn{
+            display: block;
+
+
+            margin: 10px auto;
+            border: none;
+
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .submit-btn {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            background-color: pink;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 35px;
+        }
+        /*loading animation*/
+        svg {
+            overflow: visible;
+            width: 50px;
+            height: 50px;
+            transform: scale(0.4);
+            margin-top: 100px;
+            display: none;
+
+        }
+
+        g {
+            animation: slide 2s linear infinite;
+        }
+
+        g:nth-child(2) {
+
+            animation-delay: 0.5s;
+        }
+
+        g:nth-child(2) path {
+            animation-delay: 0.5s;
+            stroke-dasharray: 0px 150px;
+            stroke-dashoffset: 1px;
+        }
+
+        path {
+            stroke: url(#gradient);
+            stroke-width: 20px;
+            stroke-linecap: round;
+            fill: none;
+            stroke-dasharray: 0 157px;
+            stroke-dashoffset: 0;
+            animation: escalade 2s cubic-bezier(0.8, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translateY(-50px);
+            }
+            100% {
+                transform: translateY(50px);
+            }
+        }
+
+        @keyframes escalade {
+            0% {
+                stroke-dasharray: 0 157px;
+                stroke-dashoffset: 0;
+            }
+            50% {
+                stroke-dasharray: 157px 157px;
+                stroke-dashoffset: 0;
+            }
+            100% {
+                stroke-dasharray: 157px 157px;
+                stroke-dashoffset: -156px;
+            }
+        }
+
+
+        .result-container {
+            display: flex;
+            flex-direction: row; /* Aligns items in a horizontal row */
+            justify-content: center; /* Centers them horizontally */
+            align-items: center; /* Centers them vertically */
+            gap: 75px; /* Adds spacing between the image boxes */
+
+            flex-wrap: wrap; /* Allows wrapping if screen is too small */
+
+
+            background-color: #4d4d4d;
+            width: 90%;
+            display: flex;
+
+            padding: 10px;
+            border-radius: 15px;
+            margin-top: 80px;
+            margin-bottom: 80px;
+            display: none;
+
+
+
+
+
+        }
+
+        .image-box {
+            width: 350px;;
+            height: 350px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #FFA07A;
+
+            margin-top: 35px;
+            margin-bottom: 35px;
+
+            transition: 0.3s; /* Smooth transition */
+
+
+
+        }
+        .image-box-3:hover{
+            box-shadow: 0 8px 16px black; /* Enhanced shadow on hover */
+        }
+        .image-box:hover {
+            box-shadow: 0 8px 16px black; /* Enhanced shadow on hover */
+        }
+
+        .image-box-org{
+            width: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .image-box-org img {
+
+            width: 350px;
+
+            height: 300px;
+            border-radius: 15px;
+
+            background-size: cover;
+        }
+        .img-box-content {
+
+            padding-bottom: 20px;
+
+            flex: 2;
+            font-weight: bold;
+            font-family: cursive;
+            font-size: 20px;
+
+        }
+        .image-box-3{
+            width: 350px;;
+            height: 350px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #FFA07A;
+            transition: 0.3s;
+
+
+
+            margin-top: 35px;
+            margin-bottom: 35px;
+
+            border-radius: 15px;
+
+        }
+        .image-box-3-div{
+            width: 300px;
+            height: 300px;
+
+            border-radius: 15px;
+            margin-bottom: 40px;
+
+            background-color: white;
+        }
+        .img-box-3-content{
+            text-align: center;
+            font-family: cursive;
+            font-size: 20px;
+        }
+        .wrong-image{
+            color: white;
+            margin-top: 100px;
+            display: none;
+
+        }
+        #para{
+
+            text-align: center;
+            padding: 10px;
+
+            color: black;
+            font-family: cursive;
+            font-size: 20px;
+        }
+        #class{
+
+            text-align: center;
+            font-family: cursive;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='Breast Cancer Detection Using Multi-scale Cascaded Convolutions (1).png') }}" alt="Breast Cancer Awareness">
+        </div>
+        <div class="content">
+            <h2>Breast Cancer Detection Using Multiscale Cascaded Convolutions</h2>
+            <div class="buttons" id="upload-form">
+                <input type="file" id="file" accept="image/*" class="upload-btn" required>
+                <button class="submit-btn" type="submit">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <svg id="loading-container">
+        <g>
+            <path d="M 50,100 A 1,1 0 0 1 50,0" />
+        </g>
+        <g>
+            <path d="M 50,75 A 1,1 0 0 0 50,-25" />
+        </g>
+        <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#FF56A1;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#FF9350;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <div class="result-container" id="result-container">
+        <div class="image-box" id="original">
+            <div class="image-box-org"><img src="" id="original-img" alt="Original Image"></div>
+            <div class="img-box-content"><h4>Original Image</h4></div>
+        </div>
+        <div class="image-box" id="segmented">
+            <div class="image-box-org"><img src="" id="segmented-img" alt="Segmented Image"></div>
+            <div class="img-box-content"><h4>Segmented Image</h4></div>
+        </div>
+        <div class="image-box-3" id="classification">
+            <div class="image-box-3-div">
+                <h4 id="class">class name</h4>
+                <p id="para">All clear! Keep up with regular check-ups and stay healthy!</p>
+            </div>
+            <div class="img-box-3-content"><h4>Classification Result</h4></div>
+        </div>
+    </div>
+
+    <div class="wrong-image">
+        <p>Upload only breast ultrasound image...</p>
+    </div>
+    <script>
+        document.querySelector(".submit-btn").addEventListener("click", function(event) {
+    event.preventDefault();
+    let fileInput = document.getElementById("file");
+
+    if (!fileInput.files.length) {
+        alert("Please select a file!");
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+
+    document.getElementById("loading-container").style.display = "block";
+    document.getElementById("result-container").style.display = "none";
+
+    fetch("/predict", { method: "POST", body: formData })
+    .then(response => response.json())
+    .then(data => {
+        if (data.original) {
+            document.getElementById("original-img").src = `/uploads/${data.original}`;
+        }
+        if (data.overlay) {
+            document.getElementById("segmented-img").src = `/uploads/${data.overlay}`;
+        }
+
+        let className = data.class_result || "Unknown"; // Handle undefined cases
+
+        document.getElementById("class").innerText = className;
+
+        if (className === "Normal") {
+            document.getElementById("para").innerText = "All clear! Keep up with regular check-ups and stay healthy!";
+        } else if (className === "Benign") {
+            document.getElementById("para").innerText = "No worries! Follow up as needed and stay positive!";
+        } else {
+            document.getElementById("para").innerText = "Stay strong! Early care makes a big difference!";
+        }
+
+        // Add a delay before hiding the loading animation
+        setTimeout(() => {
+            document.getElementById("loading-container").style.display = "none";
+            document.getElementById("result-container").style.display = "flex";
+        }, 2000); // Delay for 2 seconds (2000 ms)
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("An error occurred while processing your request.");
+    });
+});
+
+    </script>
+</body>
+</html>
